@@ -10,9 +10,9 @@ from rest_framework.views import APIView
 
 class CategoryListView(APIView, CustomPagination):
     def get(self, request):
-        data = Category.objects.all()
+        data = Category.objects.get_queryset().order_by('id')
         results = self.paginate_queryset(data, request, view=self)
-        serialized = CategorySerializer(data, many=True)
+        serialized = CategorySerializer(results, many=True)
         return self.get_paginated_response(serialized.data)
 
     def post(self, request):
@@ -52,11 +52,12 @@ class CategoryDetailView(APIView):
 """ ===================== Product views ================================="""
 
 
-class ProductListView(APIView):
+class ProductListView(APIView, CustomPagination):
     def get(self, request):
-        data = Product.objects.all()
-        serialized = ProductSerializer(data, many=True)
-        return Response(serialized.data)
+        data = Product.objects.get_queryset().order_by('id')
+        results = self.paginate_queryset(data, request, view=self)
+        serialized = ProductSerializer(results, many=True)
+        return self.get_paginated_response(serialized.data)
 
     def post(self, request):
         product = ProductSerializer(data=request.data)
@@ -95,11 +96,12 @@ class ProductDetailView(APIView):
 """ ===================== Item views ================================="""
 
 
-class ItemListView(APIView):
+class ItemListView(APIView, CustomPagination):
     def get(self, request):
-        data = Item.objects.all()
-        serialized = ItemSerializer(data, many=True)
-        return Response(serialized.data)
+        data = Item.objects.get_queryset().order_by('id')
+        results = self.paginate_queryset(data, request, view=self)
+        serialized = ItemSerializer(results, many=True)
+        return self.get_paginated_response(serialized.data)
 
     def post(self, request):
         item = ItemSerializer(data=request.data)

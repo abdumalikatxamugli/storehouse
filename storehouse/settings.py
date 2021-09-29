@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'frontend'
 ]
 
 MIDDLEWARE = [
@@ -61,7 +62,7 @@ ROOT_URLCONF = 'storehouse.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/templates/dist')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,28 +81,28 @@ WSGI_APPLICATION = 'storehouse.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-
-        'NAME': "storehouse_db",
-
-        'USER': 'postgres',
-
-        'PASSWORD': '1234',
-
-        'HOST': '127.0.0.1',
-
-        'PORT': '5431'
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': 'mydatabase',
+#         'ENGINE': 'django.db.backends.postgresql',
+#
+#         'NAME': "storehouse_db",
+#
+#         'USER': 'postgres',
+#
+#         'PASSWORD': '1234',
+#
+#         'HOST': '127.0.0.1',
+#
+#         'PORT': '5431'
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -139,8 +140,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-
+STATIC_URL = '/dist/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'frontend/templates/dist'),)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, "static"),
+#     os.path.join(BASE_DIR, "frontend/templates/dist"),
+# )
+# STATICFILES_DIRS = [
+#   os.path.join(BASE_DIR, 'frontend/templates/dist'),
+# ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
